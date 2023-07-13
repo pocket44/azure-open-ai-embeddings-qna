@@ -319,8 +319,9 @@
       "apiVersion": "2020-02-02",
       "name": "[parameters('ApplicationInsightsName')]",
       "location": "[resourceGroup().location]",
-      "tags": {
-        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', parameters('ApplicationInsightsName')), parameters('resourceTags'))]": "Resource"
+      "tags": {[
+        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', parameters('ApplicationInsightsName')))]": "Resource",
+        parameters('resourceTags')]
       },
       "properties": {
         "Application_Type": "web"
