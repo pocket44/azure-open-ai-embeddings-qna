@@ -143,6 +143,16 @@
     "newGuid": {
       "type": "string",
       "defaultValue": "[newGuid()]"
+    },
+    "resourceTags": {
+      "type": "object",
+      "defaultValue": {
+        "environment": "sandbox",
+        "application": "core",
+        "businessArea":"Cross-Cutting",
+        "builtFrom":"https://github.com/pocket44/azure-open-ai-embeddings-qna#deploy-on-azure-webapp--batch-processing-with-azure-cognitive-search",,
+        "expiresAfter":"2023-11-30",
+      }
     }
   },
   "variables": {
@@ -157,6 +167,7 @@
       "name": "[parameters('AzureCognitiveSearch')]",
       "type": "Microsoft.Search/searchServices",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('resourceTags')]",
       "sku": {
         "name": "[parameters('AzureCognitiveSearchSku')]"
       },
@@ -170,6 +181,7 @@
       "apiVersion": "2022-12-01",
       "name": "[parameters('FormRecognizerName')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('resourceTags')]",
       "sku": {
         "name": "S0"
       },
@@ -191,6 +203,7 @@
       "apiVersion": "2022-12-01",
       "name": "[parameters('TranslatorName')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('resourceTags')]",
       "sku": {
         "name": "S1"
       },
@@ -212,6 +225,7 @@
       "name": "[parameters('HostingPlanName')]",
       "type": "Microsoft.Web/serverfarms",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('resourceTags')]",
       "sku": {
         "name": "[parameters('HostingPlanSku')]"
       },
@@ -226,6 +240,7 @@
       "name": "[parameters('WebsiteName')]",
       "type": "Microsoft.Web/sites",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('resourceTags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', parameters('HostingPlanName'))]"
       ],
@@ -241,6 +256,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2021-08-01",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('resourceTags')]",
       "kind": "StorageV2",
       "sku": {
         "name": "Standard_GRS"
@@ -249,6 +265,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2021-08-01",
+      "tags": "[parameters('resourceTags')]",
       "name": "[concat(parameters('StorageAccountName'), '/default/', variables('BlobContainerName'))]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
@@ -261,6 +278,7 @@
       "type": "Microsoft.Storage/storageAccounts/queueServices",
       "apiVersion": "2022-09-01",
       "name": "[concat(parameters('StorageAccountName'), '/default')]",
+      "tags": "[parameters('resourceTags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
       ],
@@ -274,6 +292,7 @@
       "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
       "apiVersion": "2022-09-01",
       "name": "[concat(parameters('StorageAccountName'), '/default/doc-processing')]",
+      "tags": "[parameters('resourceTags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('StorageAccountName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
@@ -286,6 +305,7 @@
       "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
       "apiVersion": "2022-09-01",
       "name": "[concat(parameters('StorageAccountName'), '/default/doc-processing-poison')]",
+      "tags": "[parameters('resourceTags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('StorageAccountName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]"
@@ -300,7 +320,7 @@
       "name": "[parameters('ApplicationInsightsName')]",
       "location": "[resourceGroup().location]",
       "tags": {
-        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', parameters('ApplicationInsightsName')))]": "Resource"
+        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', parameters('ApplicationInsightsName'), parameters('resourceTags'))]": "Resource"
       },
       "properties": {
         "Application_Type": "web"
@@ -313,7 +333,7 @@
       "type": "Microsoft.Web/sites",
       "kind": "functionapp,linux",
       "location": "[resourceGroup().location]",
-      "tags": {},
+      "tags": "[parameters('resourceTags')]",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/', parameters('HostingPlanName'))]",
         "[concat('Microsoft.Storage/storageAccounts/', parameters('StorageAccountName'))]",
@@ -430,6 +450,7 @@
       "type": "Microsoft.Web/sites/host/functionKeys",
       "apiVersion": "2018-11-01",
       "name": "[concat(parameters('FunctionName'), '/default/clientKey')]",
+      "tags": "[parameters('resourceTags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', parameters('FunctionName'))]",
         "WaitFunctionDeploymentSection"
@@ -443,6 +464,7 @@
       "type": "Microsoft.Web/sites/config",
       "apiVersion": "2021-03-01",
       "name": "[format('{0}/{1}', parameters('WebsiteName'), 'appsettings')]",
+      "tags": "[parameters('resourceTags')]",
       "kind": "string",
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', parameters('WebsiteName'))]",
@@ -476,6 +498,7 @@
       "kind": "AzurePowerShell",
       "name": "WaitFunctionDeploymentSection",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('resourceTags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', parameters('FunctionName'))]"
       ],
