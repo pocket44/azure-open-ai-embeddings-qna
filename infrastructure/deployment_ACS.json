@@ -149,9 +149,9 @@
       "defaultValue": {
         "environment": "sandbox",
         "application": "core",
-        "businessArea":"Cross-Cutting",
-        "builtFrom":"https://github.com/pocket44/azure-open-ai-embeddings-qna#deploy-on-azure-webapp--batch-processing-with-azure-cognitive-search",,
-        "expiresAfter":"2023-11-30",
+        "businessArea": "Cross-Cutting",
+        "builtFrom": "https://github.com/pocket44/azure-open-ai-embeddings-qna#deploy-on-azure-webapp--batch-processing-with-azure-cognitive-search",
+        "expiresAfter": "2023-11-30"
       }
     }
   },
