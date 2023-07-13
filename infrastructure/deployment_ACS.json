@@ -320,7 +320,7 @@
       "name": "[parameters('ApplicationInsightsName')]",
       "location": "[resourceGroup().location]",
       "tags": {
-        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', parameters('ApplicationInsightsName'), parameters('resourceTags'))]": "Resource"
+        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', parameters('ApplicationInsightsName')), parameters('resourceTags'))]": "Resource"
       },
       "properties": {
         "Application_Type": "web"
