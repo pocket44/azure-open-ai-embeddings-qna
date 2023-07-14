@@ -319,7 +319,7 @@
       "apiVersion": "2020-02-02",
       "name": "[parameters('ApplicationInsightsName')]",
       "location": "[resourceGroup().location]",
-      "tags": "[union(parameters('resourceTags'), { [concat('hidden-link:', resourceId('Microsoft.Web/sites', parameters('ApplicationInsightsName')))] : 'Resource' })]",
+      "tags": "[union(parameters('resourceTags'), json(concat('{\"', concat('hidden-link:', resourceId('Microsoft.Web/sites', parameters('ApplicationInsightsName'))), '\": \"Resource\"}')))]",
       "properties": {
         "Application_Type": "web"
       },
